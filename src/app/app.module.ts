@@ -4,17 +4,21 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { LookupFormComponent } from './lookup-form/lookup-form.component';
+
+import { CannabisReportService } from './cannabis-report.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LookupFormComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [CannabisReportService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

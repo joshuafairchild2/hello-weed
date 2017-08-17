@@ -1,0 +1,7 @@
+<div class="">
+  <div class="form-group card">
+    <label>Enter the name of a cannabis strain:</label>
+    <input (keyup.enter)='searchStrains(strain.value); strain.value="";' type="text" class="form-control" #strain>
+  </div>
+  <button (click)='searchStrains(strain.value); strain.value="";' type="submit" class="btn btn-primary">Search</button>
+</div>
