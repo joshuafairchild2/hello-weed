@@ -1,7 +1,26 @@
-<div class="">
-  <div class="form-group card">
-    <label>Enter the name of a cannabis strain:</label>
-    <input (keyup.enter)='searchStrains(strain.value); strain.value="";' type="text" class="form-control" #strain>
+<div class="search-form card">
+  <div class="card-content">
+    <div class="input-field">
+      <label>Enter the name of a cannabis strain</label>
+      <input (keyup.enter)='searchStrains(strain.value); strain.value="";' type="text" class="form-control" #strain placeholder="Super Lemon Haze">
+    </div>
+    <button (click)='searchStrains(strain.value); strain.value="";' type="submit" class="btn waves-effect waves-light">Search</button>
   </div>
-  <button (click)='searchStrains(strain.value); strain.value="";' type="submit" class="btn btn-primary">Search</button>
+</div>
+
+<div *ngIf='searchResults' class="search-results">
+  <div *ngFor='let strain of searchResults' class="card strain-card">
+    <div class="card-image">
+      <img src="{{ strain.image }}" class="search-result-img">
+      <span class="card-title">{{ strain.name }}</span>
+    </div>
+    <div class="card-content">
+      <h4 *ngIf="strain.seedCompanyName != 'Unknown Breeder'">By {{ strain.seedCompanyName }}</h4>
+      <h5>{{ strain.geneticsNames }}</h5>
+      <h5>{{ strain.reviewsCount }} reviews</h5>
+    </div>
+    <div class="card-action">
+      <button class='btn btn-large waves-effect waves-light' name="button">View Details</button>
+    </div>
+  </div>
 </div>

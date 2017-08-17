@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map'
 
 @Injectable()
 export class CannabisReportService {
@@ -11,7 +12,8 @@ export class CannabisReportService {
 
   searchStrains(query: string): Observable<any> {
     const url = `${this.searchEndpoint}${query}`;
-    return this.http.get(url);
+    return this.http.get(url)
+      .map(res => res.json().data);
   }
 
 }
