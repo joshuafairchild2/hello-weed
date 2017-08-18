@@ -6,7 +6,8 @@ import 'rxjs/add/operator/map'
 @Injectable()
 export class CannabisReportService {
 
-  public searchEndpoint = 'https://www.cannabisreports.com/api/v1.0/strains/search/';
+  public searchEndpoint = 'https://www.cannabisreports.com/api/v1.0/strains/search/'; //  /strain_name
+  public strainDetailsEndpoint = `https://www.cannabisreports.com/api/v1.0/strains/`; //  /ucpc
 
   constructor(private http: Http) { }
 
@@ -16,5 +17,9 @@ export class CannabisReportService {
       .map(res => res.json());
   }
 
-  // pageSearch()
+  getStrainDetails(ucpc: string): Observable<any> {
+    const url = `${this.strainDetailsEndpoint}${ucpc}`;
+    return this.http.get(url)
+      .map(res => res.json());
+  }
 }

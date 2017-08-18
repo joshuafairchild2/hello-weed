@@ -2,14 +2,16 @@
   <div class="card-content">
     <div class="input-field">
       <label>Enter the name of a cannabis strain</label>
-      <input (keyup.enter)='searchStrains(strain.value); strain.value="";' type="text" class="form-control" #strain placeholder="Super Lemon Haze">
+      <input (keyup.enter)='searchStrains(strain.value); strain.value="";' type="text" class="form-control" #strain>
     </div>
     <button (click)='searchStrains(strain.value); strain.value="";' type="submit" class="btn waves-effect waves-light">Search</button>
   </div>
 </div>
 
 <div *ngIf='searchResults'>
+
   <ul class="pagination">
+    <!-- LEFT ARROW -->
     <li [ngClass]='{disabled: currentPage == 1}'
         (click)='currentPage == 1 || changePages(currentPage - 1)'  class="waves-effect">
         <a href="#!"><i class="material-icons">chevron_left</i></a>
@@ -20,12 +22,14 @@
     <li [ngClass]='{active: currentPage == 3}' (click)='changePages(3)' class="waves-effect"><a href="#!">3</a></li>
     <li [ngClass]='{active: currentPage == 4}' (click)='changePages(4)' class="waves-effect"><a href="#!">4</a></li>
     <li [ngClass]='{active: currentPage == 5}' (click)='changePages(5)' class="waves-effect"><a href="#!">5</a></li>
-    
+
+    <!-- RIGHT ARROW -->
     <li [ngClass]='{disabled: currentPage == 5}'
         (click)='currentPage == 5 || changePages(currentPage + 1)' class="waves-effect">
         <a href="#!"><i class="material-icons">chevron_right</i></a>
     </li>
   </ul>
+
   <div class="search-results">
     <div *ngFor='let strain of searchResults' class="card strain-card">
       <div class="card-image">
@@ -38,8 +42,9 @@
         <h5>{{ strain.reviewsCount }} reviews</h5>
       </div>
       <div class="card-action">
-        <button class='btn btn-large waves-effect waves-light' name="button">View Details</button>
+        <button routerLink='/strains/{{ strain.ucpc }}' class='btn btn-large waves-effect waves-light' name="button">View Details</button>
       </div>
     </div>
   </div>
+
 </div>
