@@ -8,19 +8,38 @@
   </div>
 </div>
 
-<div *ngIf='searchResults' class="search-results">
-  <div *ngFor='let strain of searchResults' class="card strain-card">
-    <div class="card-image">
-      <img src="{{ strain.image }}" class="search-result-img">
-      <span class="card-title">{{ strain.name }}</span>
-    </div>
-    <div class="card-content">
-      <h4 *ngIf="strain.seedCompanyName != 'Unknown Breeder'">By {{ strain.seedCompanyName }}</h4>
-      <h5>{{ strain.geneticsNames }}</h5>
-      <h5>{{ strain.reviewsCount }} reviews</h5>
-    </div>
-    <div class="card-action">
-      <button class='btn btn-large waves-effect waves-light' name="button">View Details</button>
+<div *ngIf='searchResults'>
+  <ul class="pagination">
+    <li [ngClass]='{disabled: currentPage == 1}'
+        (click)='currentPage == 1 || changePages(currentPage - 1)'  class="waves-effect">
+        <a href="#!"><i class="material-icons">chevron_left</i></a>
+    </li>
+
+    <li [ngClass]='{active: currentPage == 1}' (click)='changePages(1)' class="waves-effect"><a href="#!">1</a></li>
+    <li [ngClass]='{active: currentPage == 2}' (click)='changePages(2)' class="waves-effect"><a href="#!">2</a></li>
+    <li [ngClass]='{active: currentPage == 3}' (click)='changePages(3)' class="waves-effect"><a href="#!">3</a></li>
+    <li [ngClass]='{active: currentPage == 4}' (click)='changePages(4)' class="waves-effect"><a href="#!">4</a></li>
+    <li [ngClass]='{active: currentPage == 5}' (click)='changePages(5)' class="waves-effect"><a href="#!">5</a></li>
+    
+    <li [ngClass]='{disabled: currentPage == 5}'
+        (click)='currentPage == 5 || changePages(currentPage + 1)' class="waves-effect">
+        <a href="#!"><i class="material-icons">chevron_right</i></a>
+    </li>
+  </ul>
+  <div class="search-results">
+    <div *ngFor='let strain of searchResults' class="card strain-card">
+      <div class="card-image">
+        <img src="{{ strain.image }}" class="search-result-img">
+        <span class="card-title">{{ strain.name }}</span>
+      </div>
+      <div class="card-content">
+        <h4 *ngIf="strain.seedCompanyName != 'Unknown Breeder'">By {{ strain.seedCompanyName }}</h4>
+        <h5>{{ strain.geneticsNames }}</h5>
+        <h5>{{ strain.reviewsCount }} reviews</h5>
+      </div>
+      <div class="card-action">
+        <button class='btn btn-large waves-effect waves-light' name="button">View Details</button>
+      </div>
     </div>
   </div>
 </div>

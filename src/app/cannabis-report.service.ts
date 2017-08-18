@@ -6,14 +6,15 @@ import 'rxjs/add/operator/map'
 @Injectable()
 export class CannabisReportService {
 
-  private searchEndpoint = 'https://www.cannabisreports.com/api/v1.0/strains/search/';
+  public searchEndpoint = 'https://www.cannabisreports.com/api/v1.0/strains/search/';
 
   constructor(private http: Http) { }
 
   searchStrains(query: string): Observable<any> {
     const url = `${this.searchEndpoint}${query}`;
     return this.http.get(url)
-      .map(res => res.json().data);
+      .map(res => res.json());
   }
 
+  // pageSearch()
 }

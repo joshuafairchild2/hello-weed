@@ -1,6 +1,6 @@
 import { TopSecretPage } from './app.po';
 
-describe('top-secret App', () => {
+describe('hello-weed App', () => {
   let page: TopSecretPage;
 
   beforeEach(() => {
