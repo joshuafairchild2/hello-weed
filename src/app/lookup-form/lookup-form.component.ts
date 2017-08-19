@@ -13,7 +13,8 @@ export class LookupFormComponent implements OnInit {
   currentPageNumber: number = null;
   searchedStrainEndpoint: string = null;
   savedSearchResults: object = {};
-  pageArray: number[] = Array.from(new Array(10), (val,index) => index + 1); // used in the frontend to allow an ngFor to loop only 10 times
+  pageCount: number = null;
+  pageArray: number[] = null;
 
   constructor(
     public cannabisService: CannabisReportService,
@@ -28,6 +29,10 @@ export class LookupFormComponent implements OnInit {
     this.searchedStrainEndpoint = `${this.cannabisService.searchEndpoint}${query}`;
     this.cannabisService.searchStrains(query)
       .subscribe(data => {
+        const totalPages: number = data.meta.pagination.total_pages;
+        totalPages <= 10 ? this.pageCount = totalPages : this.pageCount = 10;
+        this.pageArray = Array.from(new Array(this.pageCount), (val,index) => index + 1); // used in the frontend to allow an ngFor to loop only 10 times
+
         this.searchResults = this.generateStrainModels(data);
         this.savedSearchResults[1] = this.searchResults;
       });

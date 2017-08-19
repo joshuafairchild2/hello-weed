@@ -17,13 +17,13 @@
         <a href="#!"><i class="material-icons">chevron_left</i></a>
     </li>
 
-    <div class="pages" *ngFor='let pageNumber of pageArray'>
+    <span class="pages" *ngFor='let pageNumber of pageArray'>
       <li [ngClass]='{active: currentPageNumber == pageNumber}' (click)='changePages(pageNumber)' class="waves-effect"><a href="#!">{{ pageNumber }}</a></li>
-    </div>
+    </span>
 
     <!-- RIGHT ARROW -->
     <li [ngClass]='{disabled: currentPageNumber == 5}'
-        (click)='currentPageNumber == 5 || changePages(currentPageNumber + 1)' class="waves-effect">
+        (click)='currentPageNumber == 10 || changePages(currentPageNumber + 1)' class="waves-effect">
         <a href="#!"><i class="material-icons">chevron_right</i></a>
     </li>
   </ul>
