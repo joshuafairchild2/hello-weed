@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CannabisReportService } from './../cannabis-report.service';
+import { CannabisReportService } from './../services/cannabis-report.service';
 import { StrainResult } from './../models/strain-result.model';
 import { Http } from '@angular/http';
 
@@ -10,8 +10,10 @@ import { Http } from '@angular/http';
 })
 export class LookupFormComponent implements OnInit {
   searchResults: any[] = null;
-  currentPage: number = null;
+  currentPageNumber: number = null;
   searchedStrainEndpoint: string = null;
+  savedSearchResults: object = {};
+  pageArray: number[] = Array.from(new Array(10), (val,index) => index + 1); // used in the frontend to allow an ngFor to loop only 10 times
 
   constructor(
     public cannabisService: CannabisReportService,
@@ -22,22 +24,28 @@ export class LookupFormComponent implements OnInit {
   }
 
   searchStrains(query: string): void {
+    this.currentPageNumber = 1;
     this.searchedStrainEndpoint = `${this.cannabisService.searchEndpoint}${query}`;
-    this.currentPage = 1;
     this.cannabisService.searchStrains(query)
       .subscribe(data => {
         this.searchResults = this.generateStrainModels(data);
+        this.savedSearchResults[1] = this.searchResults;
       });
   }
 
   changePages(pageNumber: number): void {
+    this.currentPageNumber = pageNumber;
     const url = `${this.searchedStrainEndpoint}/?page=${pageNumber}`;
-    this.currentPage = pageNumber;
-    this.http.get(url)
-      .map(res => res.json())
-      .subscribe(data => {
-         this.searchResults = this.generateStrainModels(data);
-      });
+    if (this.savedSearchResults[pageNumber]) {
+      this.searchResults = this.savedSearchResults[pageNumber];
+    } else {
+      this.http.get(url)
+        .map(res => res.json())
+        .subscribe(data => {
+           this.searchResults = this.generateStrainModels(data);
+           this.savedSearchResults[pageNumber] = this.searchResults;
+        });
+    }
   }
 
   generateStrainModels(apiResponse: any): StrainResult[] {

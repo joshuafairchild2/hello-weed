@@ -7,7 +7,7 @@ import { routing } from './app.routing';
 import { AppComponent } from './app.component';
 import { LookupFormComponent } from './lookup-form/lookup-form.component';
 
-import { CannabisReportService } from './cannabis-report.service';
+import { CannabisReportService } from './services/cannabis-report.service';
 import { StrainDetailsComponent } from './strain-details/strain-details.component';
 
 @NgModule({
