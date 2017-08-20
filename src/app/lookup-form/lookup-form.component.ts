@@ -13,7 +13,6 @@ export class LookupFormComponent implements OnInit {
   currentPageNumber: number = null;
   searchedStrainEndpoint: string = null;
   savedSearchResults: object = {};
-  pageCount: number = null;
   pageArray: number[] = null;
 
   constructor(
@@ -29,9 +28,10 @@ export class LookupFormComponent implements OnInit {
     this.searchedStrainEndpoint = `${this.cannabisService.searchEndpoint}${query}`;
     this.cannabisService.searchStrains(query)
       .subscribe(data => {
+        let usedPages: number;
         const totalPages: number = data.meta.pagination.total_pages;
-        totalPages <= 10 ? this.pageCount = totalPages : this.pageCount = 10;
-        this.pageArray = Array.from(new Array(this.pageCount), (val,index) => index + 1); // used in the frontend to allow an ngFor to loop only 10 times
+        totalPages >= 10 ? usedPages = 10 : usedPages = totalPages;
+        this.pageArray = Array.from(new Array(usedPages), (val,index) => index + 1);
 
         this.searchResults = this.generateStrainModels(data);
         this.savedSearchResults[1] = this.searchResults;

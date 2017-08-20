@@ -1,48 +1,54 @@
-<div class="search-form card">
-  <div class="card-content">
-    <div class="input-field">
-      <label>Enter the name of a cannabis strain</label>
-      <input (keyup.enter)='searchStrains(strain.value); strain.value="";' type="text" class="form-control" #strain>
+<div class="row">
+  <div class="col s8 offset-s2">
+    <div class="z-depth-4 search-form card small">
+      <div class="card-content">
+        <div class="input-field">
+          <label>Enter the name of a cannabis strain</label>
+          <input (keyup.enter)='searchStrains(strain.value); strain.value="";' type="text" class="form-control" #strain>
+        </div>
+        <button (click)='searchStrains(strain.value); strain.value="";' type="submit" class="btn waves-effect waves-light">Search</button>
+      </div>
     </div>
-    <button (click)='searchStrains(strain.value); strain.value="";' type="submit" class="btn waves-effect waves-light">Search</button>
   </div>
 </div>
 
-<div *ngIf='searchResults'>
+<div id="results-container">
+  <div *ngIf='searchResults'>
 
-  <ul class="pagination">
-    <!-- LEFT ARROW -->
-    <li [ngClass]='{disabled: currentPageNumber == 1}'
-        (click)='currentPageNumber == 1 || changePages(currentPageNumber - 1)'  class="waves-effect">
-        <a href="#!"><i class="material-icons">chevron_left</i></a>
-    </li>
+    <ul class="pagination">
+      <!-- LEFT ARROW -->
+      <li [ngClass]='{disabled: currentPageNumber == 1}'
+          (click)='currentPageNumber == 1 || changePages(currentPageNumber - 1)'  class="waves-effect">
+          <a href="#!"><i class="material-icons">chevron_left</i></a>
+      </li>
 
-    <span class="pages" *ngFor='let pageNumber of pageArray'>
-      <li [ngClass]='{active: currentPageNumber == pageNumber}' (click)='changePages(pageNumber)' class="waves-effect"><a href="#!">{{ pageNumber }}</a></li>
-    </span>
+      <span class="pages" *ngFor='let pageNumber of pageArray'>
+        <li [ngClass]='{active: currentPageNumber == pageNumber}' (click)='changePages(pageNumber)' class="waves-effect"><a href="#!">{{ pageNumber }}</a></li>
+      </span>
 
-    <!-- RIGHT ARROW -->
-    <li [ngClass]='{disabled: currentPageNumber == 5}'
-        (click)='currentPageNumber == 10 || changePages(currentPageNumber + 1)' class="waves-effect">
-        <a href="#!"><i class="material-icons">chevron_right</i></a>
-    </li>
-  </ul>
+      <!-- RIGHT ARROW -->
+      <li [ngClass]='{disabled: currentPageNumber == pageArray.length}'
+          (click)='currentPageNumber == pageArray.length || changePages(currentPageNumber + 1)' class="waves-effect">
+          <a href="#!"><i class="material-icons">chevron_right</i></a>
+      </li>
+    </ul>
 
-  <div class="search-results">
-    <div *ngFor='let strain of searchResults' class="card strain-card">
-      <div class="card-image">
-        <img src="{{ strain.image }}" class="search-result-img">
-        <span class="card-title">{{ strain.name }}</span>
-      </div>
-      <div class="card-content">
-        <h4 *ngIf="strain.seedCompanyName != 'Unknown Breeder'">By {{ strain.seedCompanyName }}</h4>
-        <h5>{{ strain.geneticsNames }}</h5>
-        <h5>{{ strain.reviewsCount }} reviews</h5>
-      </div>
-      <div class="card-action">
-        <button routerLink='/strains/{{ strain.ucpc }}' class='btn btn-large waves-effect waves-light' name="button">View Details</button>
+    <div class="search-results">
+      <div *ngFor='let strain of searchResults' class="card strain-card">
+        <div class="card-image">
+          <img src="{{ strain.image }}" class=" search-result-img">
+          <span class="card-title">{{ strain.name }}</span>
+        </div>
+        <div class="card-content">
+          <h4 *ngIf="strain.seedCompanyName != 'Unknown Breeder'">By {{ strain.seedCompanyName }}</h4>
+          <h5>{{ strain.geneticsNames }}</h5>
+          <h5>{{ strain.reviewsCount }} reviews</h5>
+        </div>
+        <div class="card-action">
+          <button routerLink='/strains/{{ strain.ucpc }}' class='btn btn-large waves-effect waves-light' name="button">View Details</button>
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
 </div>
