@@ -33,7 +33,7 @@ export class LookupFormComponent implements OnInit {
         totalPages >= 10 ? usedPages = 10 : usedPages = totalPages;
         this.pageArray = Array.from(new Array(usedPages), (val, index) => index + 1);
 
-        this.searchResults = this.generateStrainModels(data);
+        this.searchResults = this.generateStrainResultModels(data);
         this.savedSearchResults[1] = this.searchResults;
       });
   }
@@ -47,13 +47,13 @@ export class LookupFormComponent implements OnInit {
       this.http.get(url)
         .map(res => res.json())
         .subscribe(data => {
-           this.searchResults = this.generateStrainModels(data);
+           this.searchResults = this.generateStrainResultModels(data);
            this.savedSearchResults[pageNumber] = this.searchResults;
         });
     }
   }
 
-  generateStrainModels(apiResponse: any): StrainResult[] {
+  generateStrainResultModels(apiResponse: any): StrainResult[] {
     return apiResponse.data.map(s => {
       return new StrainResult(
         s.image,

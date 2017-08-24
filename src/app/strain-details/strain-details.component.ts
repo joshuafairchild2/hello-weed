@@ -14,11 +14,11 @@ import 'rxjs/add/operator/mergeMap';
   styleUrls: ['./strain-details.component.sass']
 })
 export class StrainDetailsComponent implements OnInit {
-  selectedStrain: StrainData = null;
+  public selectedStrain: StrainData = null;
 
   constructor(
-    public cannabisService: CannabisReportService,
-    public route: ActivatedRoute
+    private cannabisService: CannabisReportService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class StrainDetailsComponent implements OnInit {
         .mergeMap(response => this.reformatDetailResponse(response));
 
 
-    strainObservable.subscribe(strainModel => {
+    strainObservable.subscribe((strainModel: StrainData): void => {
       this.selectedStrain = strainModel;
       console.log(strainModel);
     });
@@ -37,11 +37,11 @@ export class StrainDetailsComponent implements OnInit {
 
   reformatDetailResponse(strainDetailResponse: Observable<any>): Observable<StrainData> {
     return strainDetailResponse
-              .mergeMap((res): Observable<StrainEffectData> => this.cannabisService.getStrainEffects(res.ucpc))
-              .mergeMap((effects): Observable<StrainData> => this.generateStrainDetailModel(strainDetailResponse, effects));
+              .mergeMap((res: any): Observable<StrainEffectData> => this.cannabisService.getStrainEffects(res.ucpc))
+              .mergeMap((effects: StrainEffectData): Observable<StrainData> => this.generateStrainDetailModel(strainDetailResponse, effects));
   }
 
   generateStrainDetailModel(details: Observable<any>, effects: StrainEffectData): Observable<StrainData> {
-    return details.map((res): StrainData => new StrainData(res.image, res.name, res.seedCompany.name, res.ucpc, effects));
+    return details.map((res: any): StrainData => new StrainData(res.image, res.name, res.seedCompany.name, res.ucpc, effects));
   }
 }
