@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     component: LookupFormComponent
   },
   {
-    path: 'strains/:id',
+    path: 'strains/:ucpc',
     component: StrainDetailsComponent
   }
 ];

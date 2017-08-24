@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
+import { StrainEffectData } from './../models/strain-effect-data.model';
+
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class CannabisReportService {
@@ -20,6 +22,12 @@ export class CannabisReportService {
   getStrainDetails(ucpc: string): Observable<any> {
     const url = `${this.strainDetailsEndpoint}${ucpc}`;
     return this.http.get(url)
-      .map(res => res.json());
+      .map(res => res.json().data);
+  }
+
+  getStrainEffects(ucpc: string): Observable<any> {
+    const url = `${this.strainDetailsEndpoint}${ucpc}/effectsFlavors`;
+    return this.http.get(url)
+      .map(res => res.json().data as StrainEffectData);
   }
 }

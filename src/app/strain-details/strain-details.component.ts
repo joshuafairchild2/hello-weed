@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CannabisReportService } from './../services/cannabis-report.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { StrainData } from './../models/strain-data.model';
+import { StrainEffectData } from './../models/strain-effect-data.model';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 
 @Component({
   selector: 'app-strain-details',
@@ -8,8 +14,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
   styleUrls: ['./strain-details.component.sass']
 })
 export class StrainDetailsComponent implements OnInit {
-  selectedStrainUcpc: string = null;
-  selectedStrain: object = null;
+  selectedStrain: StrainData = null;
 
   constructor(
     public cannabisService: CannabisReportService,
@@ -17,12 +22,26 @@ export class StrainDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.selectedStrainUcpc = params['id'];
+    const strainObservable =
+      this.route.params
+        .map(params => params['ucpc'])
+        .map(id => this.cannabisService.getStrainDetails(id))
+        .mergeMap(response => this.reformatDetailResponse(response));
 
-      this.cannabisService.getStrainDetails(this.selectedStrainUcpc)
-        .subscribe(data => this.selectedStrain = data.data);
+
+    strainObservable.subscribe(strainModel => {
+      this.selectedStrain = strainModel;
+      console.log(strainModel);
     });
   }
 
+  reformatDetailResponse(strainDetailResponse: Observable<any>): Observable<StrainData> {
+    return strainDetailResponse
+              .mergeMap((res): Observable<StrainEffectData> => this.cannabisService.getStrainEffects(res.ucpc))
+              .mergeMap((effects): Observable<StrainData> => this.generateStrainDetailModel(strainDetailResponse, effects));
+  }
+
+  generateStrainDetailModel(details: Observable<any>, effects: StrainEffectData): Observable<StrainData> {
+    return details.map((res): StrainData => new StrainData(res.image, res.name, res.seedCompany.name, res.ucpc, effects));
+  }
 }

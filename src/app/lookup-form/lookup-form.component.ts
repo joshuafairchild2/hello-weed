@@ -9,7 +9,7 @@ import { Http } from '@angular/http';
   styleUrls: ['./lookup-form.component.sass']
 })
 export class LookupFormComponent implements OnInit {
-  searchResults: any[] = null;
+  searchResults: StrainResult[] = null;
   currentPageNumber: number = null;
   searchedStrainEndpoint: string = null;
   savedSearchResults: object = {};
@@ -31,7 +31,7 @@ export class LookupFormComponent implements OnInit {
         let usedPages: number;
         const totalPages: number = data.meta.pagination.total_pages;
         totalPages >= 10 ? usedPages = 10 : usedPages = totalPages;
-        this.pageArray = Array.from(new Array(usedPages), (val,index) => index + 1);
+        this.pageArray = Array.from(new Array(usedPages), (val, index) => index + 1);
 
         this.searchResults = this.generateStrainModels(data);
         this.savedSearchResults[1] = this.searchResults;
