@@ -33,8 +33,7 @@ export class LookupFormComponent implements OnInit {
         totalPages >= 10 ? usedPages = 10 : usedPages = totalPages;
         this.pageArray = Array.from(new Array(usedPages), (val, index) => index + 1);
 
-        this.searchResults = this.generateStrainResultModels(data);
-        this.savedSearchResults[1] = this.searchResults;
+        this.setSearchResults(data, 1);
       });
   }
 
@@ -46,23 +45,12 @@ export class LookupFormComponent implements OnInit {
     } else {
       this.http.get(url)
         .map(res => res.json())
-        .subscribe(data => {
-           this.searchResults = this.generateStrainResultModels(data);
-           this.savedSearchResults[pageNumber] = this.searchResults;
-        });
+        .subscribe(data => this.setSearchResults(data, pageNumber));
     }
   }
 
-  generateStrainResultModels(apiResponse: any): StrainResult[] {
-    return apiResponse.data.map(s => {
-      return new StrainResult(
-        s.image,
-        s.name,
-        s.seedCompany.name,
-        s.ucpc,
-        s.genetics.names,
-        s.reviews.count
-      );
-    });
+  setSearchResults(apiResponse: any, pageNumber: number): void {
+    this.searchResults = this.cannabisService.generateStrainResultModels(apiResponse);
+    this.savedSearchResults[pageNumber] = this.searchResults;
   }
 }

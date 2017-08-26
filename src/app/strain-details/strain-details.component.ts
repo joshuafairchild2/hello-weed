@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CannabisReportService } from './../services/cannabis-report.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { StrainData } from './../models/strain-data.model';
-import { StrainEffectData } from './../models/strain-effect-data.model';
+import { Http } from '@angular/http';
+import { Strain } from './../models/strain.model';
+import { StrainEffects } from './../models/strain-effects.model';
+import { StrainReview } from './../models/strain-review.model';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
@@ -14,34 +16,24 @@ import 'rxjs/add/operator/mergeMap';
   styleUrls: ['./strain-details.component.sass']
 })
 export class StrainDetailsComponent implements OnInit {
-  public selectedStrain: StrainData = null;
+  public selectedStrain: Strain = null;
 
   constructor(
     private cannabisService: CannabisReportService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private http: Http
   ) { }
 
   ngOnInit(): void {
     const strainObservable =
       this.route.params
         .map(params => params['ucpc'])
-        .map(id => this.cannabisService.getStrainDetails(id))
-        .mergeMap(response => this.reformatDetailResponse(response));
+        .mergeMap(id => this.cannabisService.getStrainDetails(id))
 
 
-    strainObservable.subscribe((strainModel: StrainData): void => {
+    strainObservable.subscribe((strainModel: Strain) => {
       this.selectedStrain = strainModel;
-      console.log(strainModel);
+      console.log(this.selectedStrain);
     });
-  }
-
-  reformatDetailResponse(strainDetailResponse: Observable<any>): Observable<StrainData> {
-    return strainDetailResponse
-              .mergeMap((res: any): Observable<StrainEffectData> => this.cannabisService.getStrainEffects(res.ucpc))
-              .mergeMap((effects: StrainEffectData): Observable<StrainData> => this.generateStrainDetailModel(strainDetailResponse, effects));
-  }
-
-  generateStrainDetailModel(details: Observable<any>, effects: StrainEffectData): Observable<StrainData> {
-    return details.map((res: any): StrainData => new StrainData(res.image, res.name, res.seedCompany.name, res.ucpc, effects));
   }
 }

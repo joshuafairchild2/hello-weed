@@ -1,4 +1,4 @@
-export class StrainEffectData {
+export class StrainEffects {
   constructor(
     public euphoria: string,
     public creativity: string,
@@ -12,7 +12,7 @@ export class StrainEffectData {
     public sour: string,
     public sweet: string,
     public pine: string,
-    public anxiety: string,
-    public reviews: number
+    public anxiety: string
+    // public reviews: number
   ) {}
 }
